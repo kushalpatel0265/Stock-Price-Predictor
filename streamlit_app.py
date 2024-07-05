@@ -6,18 +6,15 @@ import tensorflow as tf
 import streamlit as st
 from sklearn.preprocessing import MinMaxScaler
 
-# Replace this import
-from tensorflow.keras.models import load_model
-
 start = '2010-01-01'
 end = '2023-07-30'
 
 st.title('Stock Future Predictor')
 
-use_input = st.text_input('Enter stock Ticker', 'AAPL')
+user_input = st.text_input('Enter stock Ticker', 'AAPL')
 
 if st.button('Predict'):
-    df = yf.download(use_input, start, end)
+    df = yf.download(user_input, start, end)
 
     # Describing data 
     st.subheader('Data From 2010-2023')
@@ -56,7 +53,7 @@ if st.button('Predict'):
 
     # Load model
     try:
-        model = load_model('model.h5')
+        model = tf.saved_model.load('saved_model/my_model')
     except Exception as e:
         st.error(f"Error loading model: {e}")
         st.stop()
@@ -75,7 +72,8 @@ if st.button('Predict'):
 
     x_test, y_test = np.array(x_test), np.array(y_test)
 
-    y_predicted = model.predict(x_test)
+    # Use the loaded model to predict
+    y_predicted = model(x_test)
 
     scale_factor = 1 / scaler.scale_[0]
     y_predicted = y_predicted * scale_factor
