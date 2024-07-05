@@ -7,4 +7,4 @@ yfinance
 scikit-learn
 keras
 streamlit
-tensorflow
+tensorflow==2.9.0
