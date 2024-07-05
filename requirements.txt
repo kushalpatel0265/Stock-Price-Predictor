@@ -1,1 +1,10 @@
+numpy
+pandas
+matplotlib
+seaborn
+pandas-datareader
+yfinance
+scikit-learn
+keras
 streamlit
+tensorflow
