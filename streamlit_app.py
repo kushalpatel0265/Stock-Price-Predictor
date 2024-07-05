@@ -9,12 +9,12 @@ from keras.models import  load_model
 import streamlit as st 
 
 start = '2010-01-01'
-end = '2023-7-30'
+end = '2024-07-05'
 
 
 st.title('Stock Future Predicter')
 
-use_input = st.text_input('Enter stock Ticker', 'AAPL')##############
+use_input = st.text_input('Enter stock Ticker', 'AAPL')
 
 if st.button('Predict'):
     df = yf.download(use_input, start ,end )
