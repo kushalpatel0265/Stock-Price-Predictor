@@ -4,7 +4,7 @@ matplotlib
 seaborn
 pandas-datareader
 onnx
-onnxruntime==1.8.1
+onnxruntime
 yfinance
 scikit-learn
 keras
