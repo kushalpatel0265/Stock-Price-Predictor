@@ -7,7 +7,7 @@ from sklearn.preprocessing import MinMaxScaler
 import onnxruntime as ort
 
 start = '2010-01-01'
-end = '2024-07-05'
+end = '2023-07-30'
 
 st.title('Stock Future Predictor')
 
@@ -21,6 +21,7 @@ def plot_transparent_graph(y_test, y_predicted):
     plt.style.use('dark_background')
     plt.xlabel('Time')
     plt.ylabel('Price')
+    plt.title('Prediction vs Original')
     plt.legend()
     st.pyplot(fig2)
 
@@ -35,25 +36,24 @@ def main():
         # Closing Price VS Time Chart
         st.subheader('Closing Price VS Time Chart')
         fig = plt.figure(figsize=(10, 5))
-        plt.plot(df['Close'], color='yellow')
-        st.pyplot(fig)
-
-        # Closing Price VS Time Chart with 100 moving average
-        st.subheader('Closing Price VS Time Chart with 100 moving Average')
-        ma100 = df['Close'].rolling(100).mean()
-        fig = plt.figure(figsize=(10, 5))
-        plt.plot(ma100, color='red')
-        plt.plot(df['Close'], color='yellow')
+        plt.plot(df['Close'], color='red')
+        plt.xlabel('Time')
+        plt.ylabel('Closing Price')
+        plt.title('Closing Price VS Time')
         st.pyplot(fig)
 
         # Closing Price VS Time Chart with 100 & 200 moving average
-        st.subheader('Closing Price VS Time Chart with 100 & 200 moving Average')
+        st.subheader('Closing Price VS Time Chart with 100 & 200 Moving Average')
         ma100 = df['Close'].rolling(100).mean()
         ma200 = df['Close'].rolling(200).mean()
         fig = plt.figure(figsize=(10, 5))
-        plt.plot(ma100, color='red')
-        plt.plot(ma200, color='green')
-        plt.plot(df['Close'], color='yellow')
+        plt.plot(ma100, color='red', label='100-Day Moving Average')
+        plt.plot(ma200, color='green', label='200-Day Moving Average')
+        plt.plot(df['Close'], color='blue', label='Closing Price')
+        plt.xlabel('Time')
+        plt.ylabel('Price')
+        plt.title('Closing Price with 100 & 200 Moving Averages')
+        plt.legend()
         st.pyplot(fig)
 
         # Splitting data into training and testing
