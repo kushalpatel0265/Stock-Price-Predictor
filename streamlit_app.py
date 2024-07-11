@@ -7,11 +7,11 @@ from sklearn.preprocessing import MinMaxScaler
 import onnxruntime as ort
 
 start = '2010-01-01'
-end = '2023-07-30'
+end = '2024-07-10'
 
 st.title('Stock Future Predictor')
 
-user_input = st.text_input('Enter stock Ticker', 'AAPL')
+user_input = st.text_input('Enter stock Ticker', 'BTC-USD')
 
 def plot_transparent_graph(y_test, y_predicted):
     st.subheader('Prediction vs Original')
