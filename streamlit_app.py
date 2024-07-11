@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import yfinance as yf
 import streamlit as st
 from sklearn.preprocessing import MinMaxScaler
-import tensorflow as tf
 from tensorflow.keras.models import load_model
 
 start = '2010-01-01'
