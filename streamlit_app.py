@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import yfinance as yf
 import streamlit as st
 from sklearn.preprocessing import MinMaxScaler
-import onnxruntime as ort
 
 start = '2010-01-01'
 end = '2024-07-10'
@@ -63,37 +62,9 @@ def main():
         scaler = MinMaxScaler(feature_range=(0, 1))
         data_training_array = scaler.fit_transform(data_training)
 
-        # Load ONNX model
-        try:
-            session = ort.InferenceSession('model.onnx')
-        except Exception as e:
-            st.error(f"Error loading model: {e}")
-            st.stop()
-
-        # Testing past 100 days
-        past_100_days = data_training.tail(100)
-        final_df = pd.concat([past_100_days, data_testing], ignore_index=True)
-        input_data = scaler.fit_transform(final_df)
-
-        x_test = []
-        y_test = []
-
-        for i in range(100, input_data.shape[0]):
-            x_test.append(input_data[i-100:i])
-            y_test.append(input_data[i, 0])
-
-        x_test, y_test = np.array(x_test), np.array(y_test)
-
-        # Ensure input data type is float32
-        x_test = x_test.astype(np.float32)
-
-        # Use the loaded ONNX model to predict
-        input_name = session.get_inputs()[0].name
-        y_predicted = session.run(None, {input_name: x_test})[0]
-
-        scale_factor = 1 / scaler.scale_[0]
-        y_predicted = y_predicted * scale_factor
-        y_test = y_test * scale_factor
+        # Mocked prediction for initial testing
+        y_test = data_testing['Close'].values
+        y_predicted = y_test * 1.02  # Dummy prediction for testing
 
         # Plot the results
         plot_transparent_graph(y_test, y_predicted)
