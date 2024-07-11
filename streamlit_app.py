@@ -95,4 +95,8 @@ def main():
         y_predicted = y_predicted * scale_factor
         y_test = y_test * scale_factor
 
-        # Plot the res
+        # Plot the results
+        plot_transparent_graph(y_test, y_predicted)
+
+if __name__ == "__main__":
+    main()
