@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import yfinance as yf
 import streamlit as st
 from sklearn.preprocessing import MinMaxScaler
-from tensorflow.keras.models import load_model
+import onnxruntime as ort
 
 start = '2010-01-01'
 end = '2024-07-10'
@@ -63,9 +63,9 @@ def main():
         scaler = MinMaxScaler(feature_range=(0, 1))
         data_training_array = scaler.fit_transform(data_training)
 
-        # Load the model
+        # Load ONNX model
         try:
-            model = load_model('model.h5')
+            session = ort.InferenceSession('model.onnx')
         except Exception as e:
             st.error(f"Error loading model: {e}")
             st.stop()
@@ -84,8 +84,12 @@ def main():
 
         x_test, y_test = np.array(x_test), np.array(y_test)
 
-        # Predict using the loaded model
-        y_predicted = model.predict(x_test)
+        # Ensure input data type is float32
+        x_test = x_test.astype(np.float32)
+
+        # Use the loaded ONNX model to predict
+        input_name = session.get_inputs()[0].name
+        y_predicted = session.run(None, {input_name: x_test})[0]
 
         scale_factor = 1 / scaler.scale_[0]
         y_predicted = y_predicted * scale_factor
